@@ -8,6 +8,9 @@ open Primitives
 (** The state type used in the state-error monad *)
 assume type state : Type0
 
+(** [no_nested_borrows::tick] *)
+let tick_fwd : result unit = Return ()
+
 (** [no_nested_borrows::Pair] *)
 type pair_t (t1 t2 : Type0) = { pair_x : t1; pair_y : t2; }
 
@@ -98,14 +101,6 @@ let test_box1_fwd : result unit =
 (** [no_nested_borrows::copy_int] *)
 let copy_int_fwd (x : i32) : result i32 = Return x
 
-(** [no_nested_borrows::test_unreachable] *)
-let test_unreachable_fwd (b : bool) : result unit =
-  if b then Fail Failure else Return ()
-
-(** [no_nested_borrows::test_panic] *)
-let test_panic_fwd (b : bool) : result unit =
-  if b then Fail Failure else Return ()
-
 (** [no_nested_borrows::test_copy_int] *)
 let test_copy_int_fwd : result unit =
   let* y = copy_int_fwd 0 in if not (0 = y) then Fail Failure else Return ()
@@ -158,8 +153,8 @@ let choose_test_fwd : result unit =
     then Fail Failure
     else if not (y = 0) then Fail Failure else Return () end
 
-// (** [no_nested_borrows::test_char] *)
-// let test_char_fwd : result char = Return 'a'
+(** [no_nested_borrows::test_char] *)
+let test_char_fwd : result char = Return 'a'
 
 (** [no_nested_borrows::NodeElem] *)
 type node_elem_t (t : Type0) =
@@ -215,6 +210,7 @@ let rec list_nth_mut_back
 (** [no_nested_borrows::list_rev_aux] *)
 let rec list_rev_aux_fwd
   (t : Type0) (li : list_t t) (lo : list_t t) : result (list_t t) =
+  let* _ = tick_fwd in
   begin match li with
   | ListCons hd tl -> list_rev_aux_fwd t tl (ListCons hd lo)
   | ListNil -> Return lo

@@ -1,6 +1,8 @@
 //! The examples from the ICFP submission, all in one place.
 #![allow(dead_code)]
 
+fn tick() {}
+
 // 2.1
 fn ref_incr(x: &mut i32) {
     *x = *x + 1;
@@ -55,29 +57,29 @@ fn list_nth_mut<'a, T>(l: &'a mut List<T>, i: u32) -> &'a mut T {
     }
 }
 
-fn sum(l: &List<i32>) -> i32 {
-    match l {
-        Nil => {
-            return 0;
-        }
-        Cons(x, tl) => {
-            return *x + sum(tl);
-        }
-    }
-}
+// fn sum(l: &List<i32>) -> i32 {
+//     match l {
+//         Nil => {
+//             return 0;
+//         }
+//         Cons(x, tl) => {
+//             return *x + sum(tl);
+//         }
+//     }
+// }
 
-fn test_nth() {
-    let mut l = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
-    let x = list_nth_mut(&mut l, 2);
-    *x = *x + 1;
-    assert!(sum(&l) == 7);
-}
+// fn test_nth() {
+//     let mut l = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
+//     let x = list_nth_mut(&mut l, 2);
+//     *x = *x + 1;
+//     assert!(sum(&l) == 7);
+// }
 
-// 4.3
-fn call_choose(mut p: (u32, u32)) -> u32 {
-    let px = &mut p.0;
-    let py = &mut p.1;
-    let pz = choose(true, px, py);
-    *pz = *pz + 1;
-    return p.0;
-}
+// // 4.3
+// fn call_choose(mut p: (u32, u32)) -> u32 {
+//     let px = &mut p.0;
+//     let py = &mut p.1;
+//     let pz = choose(true, px, py);
+//     *pz = *pz + 1;
+//     return p.0;
+// }

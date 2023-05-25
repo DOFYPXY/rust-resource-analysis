@@ -2,6 +2,8 @@
 //! signatures**, and doesn't contain functions with loops.
 #![allow(dead_code)]
 
+fn tick() {}
+
 pub struct Pair<T1, T2> {
     x: T1,
     y: T2,
@@ -326,6 +328,7 @@ pub fn list_nth_mut<'a, T>(l: &'a mut List<T>, i: u32) -> &'a mut T {
 
 /// In-place list reversal - auxiliary function
 fn list_rev_aux<'a, T>(li: List<T>, mut lo: List<T>) -> List<T> {
+    tick();
     match li {
         List::Nil => {
             return lo;
